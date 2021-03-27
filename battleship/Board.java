@@ -4,9 +4,6 @@ import java.util.Arrays;
 
 public class Board {
     private final char[][] board;
-    // todo: can we move most of the following variables to a common class that we extend? Most of these are needed
-    //  elsewhere or could be used to avoid duplication
-    private final String ROW_ID = "ABCDEFGHIJ";
     private final int ROWS = 10;
     private final int COLS = 10;
     private final char FOG = '~';
@@ -30,7 +27,7 @@ public class Board {
         System.out.println();
 
         for (int row = 0; row < ROWS; row++) {
-            System.out.printf("%c ", ROW_ID.charAt(row));
+            System.out.printf("%c ", "ABCDEFGHIJ".charAt(row));
             for (int col = 0; col < COLS; col++) {
                 System.out.print(board[row][col] + " ");
             }
@@ -42,7 +39,7 @@ public class Board {
 
     public char getCell(int row, int col) {
         if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
-            return '#';
+            return OFF;
         }
 
         return board[row][col];
@@ -52,10 +49,19 @@ public class Board {
         board[row][col] = SHP;
     }
 
+    public void setHIT(int row, int col) {
+        board[row][col] = HIT;
+    }
+
+    public void setMIS(int row, int col) {
+        board[row][col] = MIS;
+    }
+
     public boolean checkShipPlacement(int rowStart, int rowEnd, int colStart, int colEnd) {
-        for (int row = rowStart - 1; row <= rowEnd + 1; row++) {
-            for (int col = colStart - 1; col <= colEnd + 1; col++) {
-                if (getCell(row, col) != FOG && getCell(row, col) != OFF) {
+        for (int row = rowStart; row <= rowEnd; row++) {
+            for (int col = colStart; col <= colEnd; col++) {
+                if (getCell(row - 1, col) == SHP || getCell(row + 1, col) == SHP ||
+                        getCell(row, col - 1) == SHP || getCell(row, col + 1) == SHP) {
                     System.out.println("Error: Ship is placed too close to another ship! Try again.");
                     return false;
                 }

@@ -1,6 +1,12 @@
 package battleship;
 
-public class Ship {
+public enum Ship {
+    CARRIER("Aircraft Carrier", 5, 0),
+    BATTLESHIP("Battleship", 4, 1),
+    SUBMARINE("Submarine", 3, 2),
+    CRUISER("Cruiser", 3, 3),
+    DESTROYER("Destroyer", 2, 4);
+
     private final String name;
     private final int shipNum;
     private final int length;
@@ -17,5 +23,9 @@ public class Ship {
 
     public int getLength() {
         return length;
+    }
+
+    public int getShipNum() {
+        return shipNum;
     }
 }
