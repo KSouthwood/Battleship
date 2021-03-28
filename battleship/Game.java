@@ -51,13 +51,13 @@ public class Game {
     private boolean shipPlacement(Coordinate[] coordinates, Ship ship) {
         if (coordinates[0].getRow() != coordinates[1].getRow() &&
                 coordinates[0].getCol() != coordinates[1].getCol()) {
-            System.out.println("Error: Ship must be placed vertically or horizontally, not diagonally.");
+            System.out.println("Error: Ship must be placed vertically or horizontally, not diagonally.\n");
             return false;
         }
 
         if ((coordinates[1].getRow() - coordinates[0].getRow() +
                 coordinates[1].getCol() - coordinates[0].getCol()) + 1 != ship.getLength()) {
-            System.out.println("Error: Length is wrong for the " + ship.getName());
+            System.out.printf("Error: Length is wrong for the %s.\n\n", ship.getName());
             return false;
         }
 
@@ -77,18 +77,26 @@ public class Game {
 
     private void playGame() {
         System.out.println("The game starts!");
-        shipBoard.printBoard();
+        playerFires();
+    }
+
+    private void playerFires() {
+        shotBoard.printBoard();
         System.out.println("Take a shot!");
         Coordinate shot = input.getShot();
         if (shipBoard.getCell(shot.getRow(), shot.getCol()) == 'O') {
             shipBoard.setHIT(shot.getRow(), shot.getCol());
-            shipBoard.printBoard();
+            shotBoard.setHIT(shot.getRow(), shot.getCol());
+            shotBoard.printBoard();
             System.out.println("You hit a ship!");
-        } else {
-            shipBoard.setMIS(shot.getRow(), shot.getCol());
             shipBoard.printBoard();
-            System.out.println("You missed!");
         }
-
+        if (shipBoard.getCell(shot.getRow(), shot.getCol()) == '~') {
+            shipBoard.setMIS(shot.getRow(), shot.getCol());
+            shotBoard.setMIS(shot.getRow(), shot.getCol());
+            shotBoard.printBoard();
+            System.out.println("You missed!");
+            shipBoard.printBoard();
+        }
     }
 }

@@ -8,7 +8,7 @@ public class InputHandler {
 
     public String prompt(String message) {
         System.out.printf("%s ", message);
-        return GET_INPUT.nextLine();
+        return GET_INPUT.nextLine().toUpperCase();
     }
 
     /**
@@ -31,9 +31,9 @@ public class InputHandler {
                         Pattern.matches("[A-J]([1-9]|10)$", coordinates[1])) {
                     break;
                 }
-                System.out.println("Error! Please enter a valid coordinate.");
+                System.out.println("Error! Please enter a valid coordinate.\n");
             } else {
-                System.out.println("Error! Please enter exactly TWO coordinates.");
+                System.out.println("Error! Please enter exactly TWO coordinates.\n");
             }
         }
 
@@ -44,11 +44,11 @@ public class InputHandler {
         String coordinate;
 
         while (true) {
-            coordinate = prompt("Where do you fire a shot?");
+            coordinate = prompt("Where do you fire?");
             if (Pattern.matches("[A-J]([1-9]|10)$", coordinate)) {
                 break;
             }
-            System.out.println("Error! Invalid coordinate entered.");
+            System.out.println("Error! Invalid coordinate entered.\n");
         }
 
         return new Coordinate(coordinate);

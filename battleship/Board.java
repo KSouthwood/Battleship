@@ -20,7 +20,7 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.print("  ");
+        System.out.print("\n  ");
         for (int col = 0; col < COLS; col++) {
             System.out.printf("%d ", col + 1);
         }
@@ -62,7 +62,7 @@ public class Board {
             for (int col = colStart; col <= colEnd; col++) {
                 if (getCell(row - 1, col) == SHP || getCell(row + 1, col) == SHP ||
                         getCell(row, col - 1) == SHP || getCell(row, col + 1) == SHP) {
-                    System.out.println("Error: Ship is placed too close to another ship! Try again.");
+                    System.out.println("Error: Ship is placed too close to another ship! Try again.\n");
                     return false;
                 }
             }
