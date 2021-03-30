@@ -24,7 +24,7 @@ public class InputHandler {
         String[] coordinates;
 
         while (true) {
-            String msg = String.format("Enter the coordinates of %s (%d cells):", ship.getName(), ship.getLength());
+            String msg = String.format("Enter the coordinates of %s (%d cells):", ship.getShipName(), ship.getLength());
             coordinates = prompt(msg).split(" ");
             if (coordinates.length == 2) {
                 if (Pattern.matches("[A-J]([1-9]|10)$", coordinates[0]) &&

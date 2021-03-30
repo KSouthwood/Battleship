@@ -7,25 +7,35 @@ public enum Ship {
     CRUISER("Cruiser", 3, 3),
     DESTROYER("Destroyer", 2, 4);
 
-    private final String name;
-    private final int shipNum;
+    private final String shipName;
     private final int length;
+    private final int id;
+    private int hits;
 
-    Ship(String name, int len, int num) {
-        this.name = name;
+    Ship(String shipName, int len, int num) {
+        this.shipName = shipName;
         this.length = len;
-        this.shipNum = num;
+        this.id = num;
+        this.hits = len;
     }
 
-    public String getName() {
-        return name;
+    public String getShipName() {
+        return shipName;
     }
 
     public int getLength() {
         return length;
     }
 
-    public int getShipNum() {
-        return shipNum;
+    public int getId() {
+        return id;
+    }
+
+    public void shipHit() {
+        hits--;
+    }
+
+    public boolean isSunk() {
+        return hits == 0;
     }
 }

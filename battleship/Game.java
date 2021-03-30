@@ -11,7 +11,7 @@ public class Game {
     }
 
     public void startGame() {
-        shipBoard.printBoard();
+        shipBoard.printBoard(true);
         placePlayerShips();
         playGame();
     }
@@ -34,7 +34,7 @@ public class Game {
                 }
 
             } while (!shipPlacement(coordinates, ship));
-            shipBoard.printBoard();
+            shipBoard.printBoard(true);
         }
     }
 
@@ -55,9 +55,9 @@ public class Game {
             return false;
         }
 
-        if ((coordinates[1].getRow() - coordinates[0].getRow() +
-                coordinates[1].getCol() - coordinates[0].getCol()) + 1 != ship.getLength()) {
-            System.out.printf("Error: Length is wrong for the %s.\n\n", ship.getName());
+        if ((coordinates[1].getRow() - coordinates[0].getRow()) +
+                (coordinates[1].getCol() - coordinates[0].getCol()) + 1 != ship.getLength()) {
+            System.out.printf("Error: Length is wrong for the %s.\n\n", ship.getShipName());
             return false;
         }
 
@@ -68,7 +68,7 @@ public class Game {
 
         for (int row = coordinates[0].getRow(); row <= coordinates[1].getRow(); row++) {
             for (int col = coordinates[0].getCol(); col <= coordinates[1].getCol(); col++) {
-                shipBoard.setSHP(row, col);
+                shipBoard.setCell(row, col, Character.forDigit(ship.getId(), 10));
             }
         }
 
@@ -77,26 +77,53 @@ public class Game {
 
     private void playGame() {
         System.out.println("The game starts!");
-        playerFires();
+        shotBoard.printBoard(true);
+        System.out.println("Take a shot!");
+        do {
+            playerFires();
+        } while (shipsFloating());
+        System.out.println("You sank the last ship. You won. Congratulations!");
     }
 
     private void playerFires() {
-        shotBoard.printBoard();
-        System.out.println("Take a shot!");
         Coordinate shot = input.getShot();
-        if (shipBoard.getCell(shot.getRow(), shot.getCol()) == 'O') {
-            shipBoard.setHIT(shot.getRow(), shot.getCol());
-            shotBoard.setHIT(shot.getRow(), shot.getCol());
-            shotBoard.printBoard();
-            System.out.println("You hit a ship!");
-            shipBoard.printBoard();
+        switch (shipBoard.getCell(shot.getRow(), shot.getCol(), true)) {
+            case (Marks.SHIP):
+                int id = Character.digit(shipBoard.getCell(shot.getRow(), shot.getCol(), false), 10);
+                markCells(shot.getRow(), shot.getCol(), Marks.HIT);
+                String result = "hit";
+                Ship ship = Ship.values()[id];
+                ship.shipHit();
+                if (ship.isSunk()) {
+                    result = "sank";
+                }
+                System.out.printf("You %s a ship!\n", result);
+                break;
+            case (Marks.FOG):
+                markCells(shot.getRow(), shot.getCol(), Marks.MISS);
+                System.out.println("You missed!");
+                break;
+            default:
+                shotBoard.printBoard(true);
+                System.out.println("You already took that shot!");
         }
-        if (shipBoard.getCell(shot.getRow(), shot.getCol()) == '~') {
-            shipBoard.setMIS(shot.getRow(), shot.getCol());
-            shotBoard.setMIS(shot.getRow(), shot.getCol());
-            shotBoard.printBoard();
-            System.out.println("You missed!");
-            shipBoard.printBoard();
+    }
+
+    private void markCells(int row, int col, char mark) {
+        shipBoard.setCell(row, col, mark);
+        shotBoard.setCell(row, col, mark);
+        shotBoard.printBoard(true);
+    }
+
+    private boolean shipsFloating() {
+        boolean afloat = false;
+        for (var ship : Ship.values()) {
+            if (!ship.isSunk()) {
+                afloat = true;
+                break;
+            }
         }
+
+        return afloat;
     }
 }
