@@ -2,7 +2,7 @@ package battleship;
 
 import java.util.Arrays;
 
-public class Board {
+class Board {
     private final char[][] board;
     private final int ROWS = 10;
     private final int COLS = 10;
@@ -14,8 +14,13 @@ public class Board {
         }
     }
 
-    public void printBoard(boolean mask) {
-        System.out.print("\n  ");
+    /**
+     * Output the board in a nice formatted grid.
+     *
+     * Handles printing the board to System.out in a formatted grid.
+     */
+    void printBoard() {
+        System.out.print("  ");
         for (int col = 0; col < COLS; col++) {
             System.out.printf("%d ", col + 1);
         }
@@ -24,15 +29,23 @@ public class Board {
         for (int row = 0; row < ROWS; row++) {
             System.out.printf("%c ", "ABCDEFGHIJ".charAt(row));
             for (int col = 0; col < COLS; col++) {
-                System.out.printf("%c ", getCell(row, col, mask));
+                System.out.printf("%c ", getCell(row, col, true));
             }
             System.out.println();
         }
-
-        System.out.println();
     }
 
-    public char getCell(int row, int col, boolean mask) {
+    /**
+     * Returns the contents of the specified cell.
+     *
+     * Gets the contents of the specified cell (with row and col) and returns it.
+     * Translates the ship ID (0-4) to a SHIP if the mask parameter is true.
+     * @param row cell row to get
+     * @param col cell column to get
+     * @param mask boolean to hide/not hide the ship ID
+     * @return contents of the cell
+     */
+    char getCell(int row, int col, boolean mask) {
         if (row < 0 || row >= ROWS || col < 0 || col >= COLS) {
             return Marks.OFF;
         }
@@ -45,11 +58,11 @@ public class Board {
         return mask ? Marks.SHIP : cell;
     }
 
-    public void setCell(int row, int col, char mark) {
+    void setCell(int row, int col, char mark) {
         board[row][col] = mark;
     }
 
-    public boolean checkShipPlacement(int rowStart, int rowEnd, int colStart, int colEnd) {
+    boolean checkShipPlacement(int rowStart, int rowEnd, int colStart, int colEnd) {
         for (int row = rowStart; row <= rowEnd; row++) {
             for (int col = colStart; col <= colEnd; col++) {
                 if (getCell(row - 1, col, true) == Marks.SHIP || getCell(row + 1, col, true) == Marks.SHIP ||

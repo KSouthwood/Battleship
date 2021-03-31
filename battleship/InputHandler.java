@@ -3,10 +3,10 @@ package battleship;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class InputHandler {
+class InputHandler {
     private final static Scanner GET_INPUT = new Scanner(System.in);
 
-    public String prompt(String message) {
+    String prompt(String message) {
         System.out.printf("%s ", message);
         return GET_INPUT.nextLine().toUpperCase();
     }
@@ -20,11 +20,11 @@ public class InputHandler {
      * @return String array guaranteed to be a length of two (2) and sorted
      * @param ship details of the ship being placed
      */
-    public String[] getShipCoordinates(Ship ship) {
+    String[] getShipCoordinates(Ship ship) {
         String[] coordinates;
 
         while (true) {
-            String msg = String.format("Enter the coordinates of %s (%d cells):", ship.getShipName(), ship.getLength());
+            String msg = String.format("Enter the coordinates of %s (%d cells):", ship.getName(), ship.getLength());
             coordinates = prompt(msg).split(" ");
             if (coordinates.length == 2) {
                 if (Pattern.matches("[A-J]([1-9]|10)$", coordinates[0]) &&
@@ -40,7 +40,7 @@ public class InputHandler {
         return coordinates;
     }
 
-    public Coordinate getShot() {
+    Coordinate getShot() {
         String coordinate;
 
         while (true) {
@@ -52,5 +52,13 @@ public class InputHandler {
         }
 
         return new Coordinate(coordinate);
+    }
+
+    void waitForEnter(String msg) {
+        prompt(msg);
+    }
+
+    void clearScreen() {
+        System.out.print("\033[H\033[2J");
     }
 }

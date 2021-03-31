@@ -1,13 +1,8 @@
 package battleship;
 
-public class Coordinate {
-    private final int row;
-    private final int col;
-
-    Coordinate(int row, int col) {
-        this.row = row;
-        this.col = col;
-    }
+class Coordinate {
+    final int row;
+    final int col;
 
     Coordinate(String coord) {
         this.row = "ABCDEFGHIJ".indexOf(coord.charAt(0));
@@ -15,11 +10,11 @@ public class Coordinate {
 
     }
 
-    public int getRow() {
+    int getRow() {
         return row;
     }
 
-    public int getCol() {
+    int getCol() {
         return col;
     }
 }

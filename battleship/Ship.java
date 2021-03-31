@@ -1,41 +1,37 @@
 package battleship;
 
-public enum Ship {
-    CARRIER("Aircraft Carrier", 5, 0),
-    BATTLESHIP("Battleship", 4, 1),
-    SUBMARINE("Submarine", 3, 2),
-    CRUISER("Cruiser", 3, 3),
-    DESTROYER("Destroyer", 2, 4);
-
-    private final String shipName;
+class Ship {
+    private final String name;
     private final int length;
     private final int id;
     private int hits;
 
-    Ship(String shipName, int len, int num) {
-        this.shipName = shipName;
-        this.length = len;
-        this.id = num;
-        this.hits = len;
+    Ship(String pName, int pLen, int pID) {
+        this.name = pName;
+        this.length = pLen;
+        this.hits = pLen;
+        this.id = pID;
     }
 
-    public String getShipName() {
-        return shipName;
+    String getName() {
+        return name;
     }
 
-    public int getLength() {
+    int getLength() {
         return length;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 
-    public void shipHit() {
-        hits--;
+    void shipHit() {
+        if (hits > 0) {
+            hits--;
+        }
     }
 
-    public boolean isSunk() {
+    boolean isSunk() {
         return hits == 0;
     }
 }
